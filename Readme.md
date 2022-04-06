@@ -1,4 +1,4 @@
-# LoL Human Telegram Bot
+# Shinoa Telegram Bot
 
 # Installation
 
@@ -9,8 +9,8 @@
 
 ## Cloning this repo
 ```cmd
-> git clone https://github.com/LoL-Human/TelegramBot-NodeJS
-> cd TelegramBot-NodeJS
+> git clone https://github.com/boedzhanks/ShinoaTelebot
+> cd ShinoaTelebot
 ```
 
 ## Install the package
@@ -24,8 +24,8 @@ Edit the required value in `config.json`. You can get the apikey at [`LoL Human 
 {
     "apikey": "",
     "bot_token": "",
-    "owner": "LoL Human",
-    "ownerLink": "https://t.me/LoLHumen",
+    "owner": "Shinoa",
+    "ownerLink": "https://t.me/Boedzhanks",
     "version": "1.0.0",
     "prefix": "/"
 }
@@ -41,5 +41,5 @@ Edit the required value in `config.json`. You can get the apikey at [`LoL Human 
 
 # Thanks To
 * [`Telegraf`](https://github.com/telegraf/telegraf)
-* [`Pais`](https://github.com/Paiiss)
-* `Ben`
+* `Towartz
+* `Shinoa`
