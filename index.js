@@ -30,7 +30,7 @@ bot.on("new_chat_members", async(lol) => {
         var pp_user = await tele.getPhotoProfile(x.id)
         var full_name = tele.getUser(x).full_name
         console.log(chalk.whiteBright("├"), chalk.cyanBright("[  JOINS  ]"), chalk.whiteBright(full_name), chalk.greenBright("join in"), chalk.whiteBright(groupname))
-        await lol.replyWithPhoto({ url: `https://api.lolhuman.xyz/api/base/welcome?apikey=${apikey}&img1=${pp_user}&img2=${pp_group}&background=https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg&username=${full_name}&member=${groupmembers}&groupname=${groupname}` })
+        await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/welcome2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` })
     }
 })
 
@@ -44,7 +44,7 @@ bot.on("left_chat_member", async(lol) => {
     var pp_user = await tele.getPhotoProfile(message.left_chat_member.id)
     var full_name = tele.getUser(message.left_chat_member).full_name
     console.log(chalk.whiteBright("├"), chalk.cyanBright("[  LEAVE  ]"), chalk.whiteBright(full_name), chalk.greenBright("leave from"), chalk.whiteBright(groupname))
-    await lol.replyWithPhoto({ url: `https://api.lolhuman.xyz/api/base/leave?apikey=${apikey}&img1=${pp_user}&img2=${pp_group}&background=https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg&username=${full_name}&member=${groupmembers}&groupname=${groupname}` })
+    await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/goodbye2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` })
 })
 
 bot.command('start', async(lol) => {
@@ -258,19 +258,22 @@ bot.on("message", async(lol) => {
                 break
             case 'ytmp4':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
-                result = await fetchJson(`https://api.lolhuman.xyz/api/ytaudio2?apikey=${apikey}&url=${ args[0]}`)
+                result = await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${ args[0]}`)
                 result = result.result
                 caption = `\`❖ Title    :\` *${result.title}*\n`
                 caption += `\`❖ Size     :\` *${result.size}*`
-                await lol.replyWithPhoto({ url: result.thumbnail }, { caption: caption, parse_mode: "Markdown" })
+                await lol.replyWithPhoto({ url: result.thumb }, { caption: caption, parse_mode: "Markdown" })
                 if (Number(result.size.split(` MB`)[0]) >= 50.00) return await reply(`Sorry the bot cannot send more than 50 MB!`)
                 await lol.replyWithVideo({ url: result.link })
                 break
             case 'tiktoknowm':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} https://vt.tiktok.com/ZSwWCk5o/`)
-                url = `https://api.lolhuman.xyz/api/tiktok2?apikey=${apikey}&url=${args[0]}`
+                url = `https://yuzzu-api.herokuapp.com/api/tiktok?link=${args[0]}`
                 result = await fetchJson(url)
-                await lol.replyWithVideo({ url: result.result })
+
+bang = result.result
+tod = bang.result
+                await lol.replyWithVideo({ url: tod.nowatermark })
                 break
             case 'tiktokmusic':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} https://vt.tiktok.com/ZSwWCk5o/`)
