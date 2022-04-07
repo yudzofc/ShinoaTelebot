@@ -41,5 +41,5 @@ Edit the required value in `config.json`. You can get the apikey at [`LoL Human 
 
 # Thanks To
 * [`Telegraf`](https://github.com/telegraf/telegraf)
-* `Towartz
+* `Towartz`
 * `Shinoa`
