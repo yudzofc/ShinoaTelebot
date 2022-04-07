@@ -5,7 +5,6 @@ const tele = require('./lib/tele')
 const chalk = require('chalk')
 const os = require('os')
 const fs = require('fs')
-
 const {
     apikey,
     bot_token,
@@ -220,12 +219,13 @@ bot.on("message", async(lol) => {
 
                 // Downloader //
             case 'ytplay':
+          case 'play':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
-                await fetchJson(`https://api.lolhuman.xyz/api/ytsearch?apikey=${apikey}&query=${args.join(" ")}`)
+                await fetchJson(`https://yuzzu-api.herokuapp.com/api/yts?judul=${args.join(" ")}`)
                     .then(async(result) => {
-                        await fetchJson(`https://api.lolhuman.xyz/api/ytaudio2?apikey=${apikey}&url=https://www.youtube.com/watch?v=${result.result[0].videoId}`)
+                        await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${result.result[0].url}`)
                             .then(async(result) => {
-                                await lol.replyWithAudio({ url: result.result.link, filename: result.result.title }, { thumb: result.result.thumbnail })
+                                await lol.replyWithAudio({ url: result.result.mp3, filename: result.result.title }, { thumb: result.result.thumb })
                             })
                     })
                 break
@@ -248,13 +248,13 @@ bot.on("message", async(lol) => {
                 break
             case 'ytmp3':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
-                result = await fetchJson(`https://api.lolhuman.xyz/api/ytaudio2?apikey=${apikey}&url=${ args[0]}`)
+                result = await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${ args[0]}`)
                 result = result.result
                 caption = `\`❖ Title    :\` *${result.title}*\n`
-                caption += `\`❖ Size     :\` *${result.size}*`
-                await lol.replyWithPhoto({ url: result.thumbnail }, { caption: caption, parse_mode: "Markdown" })
+                caption += `\`❖ Size     :\` *${result.size_mp3}*`
+                await lol.replyWithPhoto({ url: result.thumb }, { caption: caption, parse_mode: "Markdown" })
                 if (Number(result.size.split(` MB`)[0]) >= 50.00) return await reply(`Sorry the bot cannot send more than 50 MB!`)
-                await lol.replyWithAudio({ url: result.link, filename: result.title })
+                await lol.replyWithAudio({ url: result.mp3, filename: result.title })
                 break
             case 'ytmp4':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
@@ -941,10 +941,27 @@ tod = bang.result
                 test = await bot.telegram.getChatMembersCount(lol.message.chat.id)
                 console.log(test)
                 break
+case 'simih':
+					if (!isGroup) return reply('Harus di group om')
+					if (args.length < 1) return reply('Ketik /simih 1 untuk mengaktifkan, ketik /simih 0 untuk menonaktifkan')
+					if (Number(args[0]) === 1) {
+						if (isSimi) return reply('𝘀𝘂𝗱𝗮𝗵 𝗮𝗸𝘁𝗶𝗳 !!!')
+						samih.push(from)
+						fs.writeFileSync('./database/simi.json', JSON.stringify(samih))
+						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Mengaktifkan simi')
+					} else if (Number(args[0]) === 0) {
+						samih.splice(from, 1)
+						fs.writeFileSync('./database/simi.json', JSON.stringify(samih))
+						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Menonaktifkan simi')
+					} else {
+						reply('?')
+					}
+					break
             default:
                 if (!isGroup && !isCmd && !isMedia) {
                     await lol.replyWithChatAction("typing")
-                    simi = await fetchJson(`https://api.lolhuman.xyz/api/simi?apikey=${apikey}&text=${body}`)
+                    simi = await fetchJson(`https://yuzzu-api.herokuapp.com/api/simi?text=${body}`)
+
                     await reply(simi.result)
                 }
         }
@@ -952,7 +969,6 @@ tod = bang.result
         console.log(chalk.whiteBright("├"), chalk.cyanBright("[  ERROR  ]"), chalk.redBright(e))
     }
 })
-
 
 bot.launch()
 bot.telegram.getMe().then((getme) => {
