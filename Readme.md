@@ -43,4 +43,4 @@ Edit the required value in `config.json`. You can get the apikey at [`LoL Human 
 * [`Telegraf`](https://github.com/telegraf/telegraf)
 * [`Towartz`](https://github.com/Towartz)
 * [`Lexmoon`](https://github.com/LexmoonVCT)
-* [`Shinoa`](https://github.com/boedzhanks)
+* [`Shinoa`](https://github.com/shinoahiiraginime)
