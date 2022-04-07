@@ -37,7 +37,7 @@ Edit the required value in `config.json`. You can get the apikey at [`LoL Human 
 ```
 
 ## Note:
-* You can request a case in my [`WhatsApp`](http://wa.me/62895418200111).
+* You can request a case in my [`WhatsApp`](http://wa.me/6283807175250).
 
 # Thanks To
 * [`Telegraf`](https://github.com/telegraf/telegraf)
