@@ -29,7 +29,9 @@ bot.on("new_chat_members", async(lol) => {
         var pp_user = await tele.getPhotoProfile(x.id)
         var full_name = tele.getUser(x).full_name
         console.log(chalk.whiteBright("├"), chalk.cyanBright("[  JOINS  ]"), chalk.whiteBright(full_name), chalk.greenBright("join in"), chalk.whiteBright(groupname))
-        await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/welcome2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` })
+
+welkom = `Selamat Datang di Grup ${groupname}\n❖ Nama     :\n❖ Umur      :\n❖ Asal Kota :\n❖ Hobby    :`
+        await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/welcome2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` }, { caption: welkom, parse_mode: "Markdown" } )
     }
 })
 
@@ -43,7 +45,8 @@ bot.on("left_chat_member", async(lol) => {
     var pp_user = await tele.getPhotoProfile(message.left_chat_member.id)
     var full_name = tele.getUser(message.left_chat_member).full_name
     console.log(chalk.whiteBright("├"), chalk.cyanBright("[  LEAVE  ]"), chalk.whiteBright(full_name), chalk.greenBright("leave from"), chalk.whiteBright(groupname))
-    await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/goodbye2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` })
+  Beliau = `Semoga Beliau Diterima Disisi-Nya`
+    await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/goodbye2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` }, { caption: Beliau, parse_mode: "Markdown" })
 })
 
 bot.command('start', async(lol) => {
@@ -225,6 +228,11 @@ bot.on("message", async(lol) => {
                     .then(async(result) => {
                         await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${result.result[0].url}`)
                             .then(async(result) => {
+
+                              caption = `\`❖ Title    :\` *${result.result.title}*\n`
+                caption += `\`❖ Size     :\` *${result.result.size_mp3}*\n`
+                 caption += `\`❖ Link     :\` *https://youtu.be/${result.result.id}*\n`          
+      await lol.replyWithPhoto({ url: result.result.thumb }, { caption: caption, parse_mode: "Markdown" })                                          
                                 await lol.replyWithAudio({ url: result.result.mp3, filename: result.result.title }, { thumb: result.result.thumb })
                             })
                     })
@@ -261,7 +269,8 @@ bot.on("message", async(lol) => {
                 result = await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${ args[0]}`)
                 result = result.result
                 caption = `\`❖ Title    :\` *${result.title}*\n`
-                caption += `\`❖ Size     :\` *${result.size}*`
+                caption += `\`❖ Size     :\` *${result.size}*\n`
+                caption += `\`❖ Quality  :\` *${result.quality}*`
                 await lol.replyWithPhoto({ url: result.thumb }, { caption: caption, parse_mode: "Markdown" })
                 if (Number(result.size.split(` MB`)[0]) >= 50.00) return await reply(`Sorry the bot cannot send more than 50 MB!`)
                 await lol.replyWithVideo({ url: result.link })
@@ -840,7 +849,11 @@ tod = bang.result
             case 'thunder':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} LoL Human`)
                 text = args.join(" ")
-                await lol.replyWithPhoto({ url: `https://api.lolhuman.xyz/api/textprome/${command}?apikey=${apikey}&text=${text}` })
+
+result = await fetchJson(`https://yuzzu-api.herokuapp.com/api/textpro/${command}?text=${text}`)
+
+tod = result.result
+                await lol.replyWithPhoto({ url: tod })
                 break
             case 'pornhub':
             case 'glitch':
