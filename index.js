@@ -363,8 +363,9 @@ tod = bang.result
                 query = args.join(" ")
                 url = await fetchJson(`https://yuzzu-api.herokuapp.com/api/pinterest?judul==${query}`)
             bang = url.result
-      url = bang[Math.floor(Math.random() * pin.length)]
-                  lol.replyWithPhoto({ url: url })
+      url = bang[Math.floor(Math.random() * bang.length)]
+text = `Nih bang ${query}`  
+  lol.replyWithPhoto({ url: url }, { caption: text, parse_mode: "Markdown" } )
                 break
             case 'pinterestdl':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} https://id.pinterest.com/pin/696580267364426905/`)
@@ -497,32 +498,29 @@ tod = bang.result
                 }
                 break
             case 'kusonime':
-                if (args.length == 0) return await reply(`Example: ${prefix + command} https://kusonime.com/nanatsu-no-taizai-bd-batch-subtitle-indonesia/`)
-                result = await fetchJson(`https://api.lolhuman.xyz/api/kusonime?apikey=${apikey}&url=${args[0]}`)
+                if (args.length == 0) return await reply(`Example: ${prefix + command} Owari no Seraph`)
+                 result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/anime/kusonime?search=${args[0]}&apikey=ZeroYT7`)
                 result = result.result
-                text = `*Title : ${result.title}\n`
-                text += `**Japanese : ${result.japanese}\n`
-                text += `**Genre : ${result.genre}\n`
-                text += `**Seasons : ${result.seasons}\n`
-                text += `**Producers : ${result.producers}\n`
-                text += `**Type : ${result.type}\n`
-                text += `**Status : ${result.status}\n`
-                text += `**Total Episode : ${result.total_episode}\n`
-                text += `**Score : ${result.score}\n`
-                text += `**Duration : ${result.duration}\n`
-                text += `**Released On : ${result.released_on}*\n`
-                link_dl = result.link_dl
-                for (var x in link_dl) {
-                    text += `\n\n*${x}*\n`
-                    for (var y in link_dl[x]) {
-                        text += `[${y}](${link_dl[x][y]}) | `
-                    }
-                }
-                if (text.length <= 1024) {
-                    return await lol.replyWithPhoto({ url: result.thumbnail }, { caption: text })
-                }
-                await lol.replyWithPhoto({ url: result.thumbnail })
-                await reply(text)
+                caption = `\❖ Title         :\ ${result.title}\n`
+                caption += `\❖ Title JP      :\ ${result.title_jp}\n`
+                caption += `\❖ Genre         :\ ${result.genre}\n`
+                caption += `\❖ Season        :\ ${result.season}\n`
+                caption += `\❖ Producer      :\ ${result.producer}\n`
+                caption += `\❖ Type          :\ ${result.type}\n`
+                caption += `\❖ Status        :\ ${result.status}\n`
+                caption += `\❖ Total episode :\ ${result.total_episode}\n`
+                caption += `\❖ Score         :\ ${result.score}\n`
+                caption += `\❖ Duration      :\ ${result.duration}\n`
+                caption += `\❖ Released on   :\ ${result.released_on}\n`
+                caption += `\❖ Description   :\ ${result.description}\n`
+     lol.replyWithPhoto({ url: result.thumbs }, { caption: caption })
+            setTimeout(function(){
+                caption2 = '❉──────────────────❉\n'
+          for (let Y of result.download) {
+					caption2 += `\n*「 Download 」*\n\n*➸ Resolution:* ${Y.resolution}\n\n*➸ Link:* ${Y.download_list[0].downloader}\n\n${Y.download_list[0].download_link}\n ❉──────────────────❉\n`
+					}
+            return reply(caption2)
+                    }, 2000);
                 break
             case 'kusonimesearch':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} Gotoubun No Hanayome`)
