@@ -1,6 +1,5 @@
 const { fetchJson, range, parseMarkdown } = require('./lib/function')
 const { Telegraf } = require('telegraf')
-const saucenao = require('saucenao')
 const help = require('./lib/help')
 const tele = require('./lib/tele')
 const chalk = require('chalk')
@@ -499,7 +498,7 @@ text = `Nih bang ${query}`
                 break
             case 'kusonime':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} Owari no Seraph`)
-                 result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/anime/kusonime?search=${args[0]}&apikey=ZeroYT7`)
+                 result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/anime/kusonime?search=${body.slice(10)}&apikey=ZeroYT7`)
                 result = result.result
                 caption = `\❖ Title         :\ ${result.title}\n`
                 caption += `\❖ Title JP      :\ ${result.title_jp}\n`

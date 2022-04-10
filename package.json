@@ -9,6 +9,7 @@
     "dependencies": {
         "chalk": "^4.1.0",
         "node-fetch": "^2.6.1",
+        "saucenao": "0.0.2",
         "telegraf": "^4.3.0"
     },
     "devDependencies": {},
