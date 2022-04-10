@@ -1,5 +1,6 @@
 const { fetchJson, range, parseMarkdown } = require('./lib/function')
 const { Telegraf } = require('telegraf')
+const saucenao = require('saucenao')
 const help = require('./lib/help')
 const tele = require('./lib/tele')
 const chalk = require('chalk')
@@ -360,9 +361,10 @@ tod = bang.result
             case 'pinterest':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} loli kawaii`)
                 query = args.join(" ")
-                url = await fetchJson(`https://api.lolhuman.xyz/api/pinterest?apikey=${apikey}&query=${query}`)
-                url = url.result
-                await lol.replyWithPhoto({ url: url })
+                url = await fetchJson(`https://yuzzu-api.herokuapp.com/api/pinterest?judul==${query}`)
+            bang = url.result
+      url = bang[Math.floor(Math.random() * pin.length)]
+                  lol.replyWithPhoto({ url: url })
                 break
             case 'pinterestdl':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} https://id.pinterest.com/pin/696580267364426905/`)
@@ -489,6 +491,7 @@ tod = bang.result
                     text += `Episode : ${result.episode}\n`
                     text += `Similarity : ${result.similarity}`
                     await lol.replyWithVideo({ url: result.video }, { caption: text })
+                  
                 } else {
                     reply(`Tag gambar yang sudah dikirim`)
                 }
