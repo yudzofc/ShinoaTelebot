@@ -511,8 +511,14 @@ text = `Nih bang ${query}`
                 caption += `\❖ Score         :\ ${result.score}\n`
                 caption += `\❖ Duration      :\ ${result.duration}\n`
                 caption += `\❖ Released on   :\ ${result.released_on}\n`
-                caption += `\❖ Description   :\ ${result.description}\n`
+                
      lol.replyWithPhoto({ url: result.thumbs }, { caption: caption })
+            setTimeout(function(){
+                caption1 = `❉──────────────────❉\n\n*「 Description 」*\n\n${result.description}\n\n ❉──────────────────❉\n`
+				
+            return reply(caption1)
+                    }, 1000);
+
             setTimeout(function(){
                 caption2 = '❉──────────────────❉\n'
           for (let Y of result.download) {
