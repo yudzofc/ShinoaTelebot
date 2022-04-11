@@ -964,7 +964,7 @@ tod = result.result
             default:
                 if (!isGroup && !isCmd && !isMedia) {
                     await lol.replyWithChatAction("typing")
-                    simi = await fetchJson(`https://api.simsimi.net/v2/?text=${body}&lc=id}`)
+                    simi = await fetchJson(`https://api.simsimi.net/v2/?text=${body}&lc=id`)
 
                     await reply(simi.success)
                 }
