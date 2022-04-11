@@ -960,28 +960,13 @@ tod = result.result
                 test = await bot.telegram.getChatMembersCount(lol.message.chat.id)
                 console.log(test)
                 break
-case 'simih':
-					if (!isGroup) return reply('Harus di group om')
-					if (args.length < 1) return reply('Ketik /simih 1 untuk mengaktifkan, ketik /simih 0 untuk menonaktifkan')
-					if (Number(args[0]) === 1) {
-						if (isSimi) return reply('𝘀𝘂𝗱𝗮𝗵 𝗮𝗸𝘁𝗶𝗳 !!!')
-						samih.push(from)
-						fs.writeFileSync('./database/simi.json', JSON.stringify(samih))
-						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Mengaktifkan simi')
-					} else if (Number(args[0]) === 0) {
-						samih.splice(from, 1)
-						fs.writeFileSync('./database/simi.json', JSON.stringify(samih))
-						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Menonaktifkan simi')
-					} else {
-						reply('?')
-					}
-					break
+
             default:
                 if (!isGroup && !isCmd && !isMedia) {
                     await lol.replyWithChatAction("typing")
-                    simi = await fetchJson(`https://yuzzu-api.herokuapp.com/api/simi?text=${body}`)
+                    simi = await fetchJson(`https://api.simsimi.net/v2/?text=${body}&lc=id}`)
 
-                    await reply(simi.result)
+                    await reply(simi.success)
                 }
         }
     } catch (e) {
