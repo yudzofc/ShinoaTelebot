@@ -5,6 +5,8 @@ const tele = require('./lib/tele')
 const chalk = require('chalk')
 const os = require('os')
 const fs = require('fs')
+const { TraceMoe } = require('trace.moe.ts')
+const wait = new TraceMoe();
 const {
     apikey,
     bot_token,
@@ -487,19 +489,16 @@ text = `Nih bang ${query}`
                 break
             case 'wait':
                 if (isQuotedImage || isQuotedAnimation || isQuotedVideo || isQuotedDocument) {
-                    url_file = await tele.getLink(file_id)
-                    result = await fetchJson(`https://api.lolhuman.xyz/api/wait?apikey=${apikey}&img=${url_file}`)
-                    result = result.result
-                    text = `Anilist id : ${result.anilist_id}\n`
-                    text += `MAL id : ${result.mal_id}\n`
-                    text += `Title Romaji : ${result.title_romaji}\n`
-                    text += `Title Native : ${result.title_native}\n`
-                    text += `Title English : ${result.title_english}\n`
-                    text += `At : ${result.at}\n`
-                    text += `Episode : ${result.episode}\n`
-                    text += `Similarity : ${result.similarity}`
-                    await lol.replyWithVideo({ url: result.video }, { caption: text })
-                  
+                url_file = await tele.getLink(file_id)
+  await wait.fetchAnime(url_file)
+.then(async(result) => {
+        tod = result.result[0]
+                    text = `❖ Anilist id : ${tod.anilist}\n`
+                    text += `❖ Filename   : ${tod.filename}\n`
+                    text += `❖ Episode    : ${tod.episode}\n`
+                    text += `❖ Similarity : ${tod.similarity}`
+                    await lol.replyWithVideo({ url: tod.video }, { caption: text })
+                  })
                 } else {
                     reply(`Tag gambar yang sudah dikirim`)
                 }
