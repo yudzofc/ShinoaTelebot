@@ -32,8 +32,8 @@ bot.on("new_chat_members", async(lol) => {
         var full_name = tele.getUser(x).full_name
         console.log(chalk.whiteBright("├"), chalk.cyanBright("[  JOINS  ]"), chalk.whiteBright(full_name), chalk.greenBright("join in"), chalk.whiteBright(groupname))
 
-welkom = `Selamat Datang di Grup ${groupname}\n❖ Nama     :\n❖ Umur      :\n❖ Asal Kota :\n❖ Hobby    :`
-        await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/welcome2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` }, { caption: welkom, parse_mode: "Markdown" } )
+welkom = `Selamat Datang di Grup ${groupname}\n❖ Nama      :\n❖ Umur       :\n❖ Asal Kota :\n❖ Hobby     :`
+        await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/welcome2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/wzyW0n5/Ep-D73w-PVo-AAN03n-1.jpg&gcicon=${pp_group}` }, { caption: welkom, parse_mode: "Markdown" } )
     }
 })
 
@@ -48,7 +48,7 @@ bot.on("left_chat_member", async(lol) => {
     var full_name = tele.getUser(message.left_chat_member).full_name
     console.log(chalk.whiteBright("├"), chalk.cyanBright("[  LEAVE  ]"), chalk.whiteBright(full_name), chalk.greenBright("leave from"), chalk.whiteBright(groupname))
   Beliau = `Semoga Beliau Diterima Disisi-Nya`
-    await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/goodbye2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/4YBNyvP/images-76.jpg&gcicon=${pp_group}` }, { caption: Beliau, parse_mode: "Markdown" })
+    await lol.replyWithPhoto({ url: `https://yuzzu-api.herokuapp.com/api/goodbye2?name=${full_name}&mem=${groupmembers}&gcname=${groupname}&picurl=${pp_user}&bgurl=https://i.ibb.co/wzyW0n5/Ep-D73w-PVo-AAN03n-1.jpg&gcicon=${pp_group}` }, { caption: Beliau, parse_mode: "Markdown" })
 })
 
 bot.command('start', async(lol) => {
