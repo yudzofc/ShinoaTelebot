@@ -224,18 +224,26 @@ bot.on("message", async(lol) => {
             case 'ytplay':
           case 'play':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
-                await fetchJson(`https://yuzzu-api.herokuapp.com/api/yts?judul=${args.join(" ")}`)
-                    .then(async(result) => {
-                        await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${result.result[0].url}`)
-                            .then(async(result) => {
-
-                              caption = `\`❖ Title    :\` *${result.result.title}*\n`
-                caption += `\`❖ Size     :\` *${result.result.size_mp3}*\n`
-                 caption += `\`❖ Link     :\` *https://youtu.be/${result.result.id}*\n`          
-      await lol.replyWithPhoto({ url: result.result.thumb }, { caption: caption, parse_mode: "Markdown" })                                          
-                                await lol.replyWithAudio({ url: result.result.mp3, filename: result.result.title }, { thumb: result.result.thumb })
-                            })
-                    })
+query = args.join(" ")
+await fetchJson(`https://yuzzu-api.herokuapp.com/api/yts?judul=${query}`)
+.then(async(bujank) => { 
+  views = bujank.result[0].views
+  duration = bujank.result[0].duration
+  uploadedAt = bujank.result[0].uploadedAt
+  bang = await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${bujank.result[0].url}`)
+  tod = bang.result
+})
+caption = `\`❖ Title    :\` *${tod.title}*\n`
+               caption += `\`❖ Size     :\` *${tod.size_mp3}*\n`
+                caption += `\`❖ Views    :\` *${views}*\n`
+                caption += `\`❖ Duration :\` *${duration}*\n`
+               caption += `\`❖ Uploaded :\` *${uploadedAt}*\n`
+                 caption += `\`❖ Link     :\` *https://youtu.be/${tod.id}*\n`
+                          
+      await lol.replyWithPhoto({ url: tod.thumb }, { caption: caption, parse_mode: "Markdown" })                                          
+                                await lol.replyWithAudio({ url: tod.mp3, filename: tod.title }, { thumb: tod.thumb })
+                            
+                  
                 break
             case 'ytsearch':
                 if (args.length == 0) return await reply(`Example: ${prefix + command} Melukis Senja`)
