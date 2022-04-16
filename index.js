@@ -493,11 +493,11 @@ text = `Nih bang ${query}`
   await wait.fetchAnime(url_file)
 .then(async(result) => {
         tod = result.result[0]
-                    text = `❖ Anilist id : ${tod.anilist}\n`
-                    text += `❖ Filename   : ${tod.filename}\n`
-                    text += `❖ Episode    : ${tod.episode}\n`
-                    text += `❖ Similarity : ${tod.similarity}`
-                    await lol.replyWithVideo({ url: tod.video }, { caption: text })
+               caption = `\`❖ Filename   :\` *${tod.filename}*\n`
+               caption += `\`❖ Episode    :\` *${tod.episode}*\n`
+                caption += `\`❖ Similarity :\` *${tod.similarity}*\n`
+                 caption += `\`❖ Anilist    :\` *https://anilist.co/anime/${tod.anilist}/*\n`
+                    await lol.replyWithVideo({ url: tod.video }, { caption: caption, parse_mode: "Markdown" })
                   })
                 } else {
                     reply(`Tag gambar yang sudah dikirim`)
