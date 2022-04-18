@@ -7,6 +7,8 @@ const os = require('os')
 const fs = require('fs')
 const { TraceMoe } = require('trace.moe.ts')
 const wait = new TraceMoe();
+const saucenao = require("sagiri");
+const client = saucenao("074a1f1a40e94436de37232d4e9f9d70afcdb90e");
 const {
     apikey,
     bot_token,
@@ -498,6 +500,22 @@ text = `Nih bang ${query}`
                 caption += `\`❖ Similarity :\` *${tod.similarity}*\n`
                  caption += `\`❖ Anilist    :\` *https://anilist.co/anime/${tod.anilist}/*\n`
                     await lol.replyWithVideo({ url: tod.video }, { caption: caption, parse_mode: "Markdown" })
+                  })
+                } else {
+                    reply(`Tag gambar yang sudah dikirim`)
+                }
+                break
+            case 'saucenao':
+                if (isQuotedImage || isQuotedAnimation || isQuotedVideo || isQuotedDocument) {
+                url_file = await tele.getLink(file_id)
+  await client(url_file)
+.then(async(result) => {
+        tod = result[0]
+               caption = `\`❖ Site       :\` *${tod.site}*\n`
+               caption += `\`❖ Index      :\` *${tod.index}*\n`
+                caption += `\`❖ Similarity :\` *${tod.similarity}*\n`
+                caption += `\`❖ Link HD    :\` *${tod.url}*\n`
+                    await lol.replyWithPhoto({ url: tod.thumbnail }, { caption: caption, parse_mode: "Markdown" })
                   })
                 } else {
                     reply(`Tag gambar yang sudah dikirim`)
