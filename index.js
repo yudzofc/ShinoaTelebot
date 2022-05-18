@@ -785,7 +785,6 @@ text = `Nih bang ${query}`
             case 'yaoi':
             case 'ecchi':
             case 'hentai':
-            case 'ahegao':
             case 'hololewd':
             case 'sideoppai':
             case 'animefeets':
@@ -800,51 +799,91 @@ text = `Nih bang ${query}`
             case 'hentai4everyone':
                 await lol.replyWithPhoto({ url: `https://api.lolhuman.xyz/api/random/nsfw/${command}?apikey=${apikey}` })
                 break
-            case 'bj':
-            case 'ero':
-            case 'cum':
-            case 'feet':
-            case 'yuri':
-            case 'trap':
-            case 'lewd':
-            case 'feed':
-            case 'eron':
-            case 'solo':
-            case 'gasm':
-            case 'poke':
-            case 'anal':
-            case 'holo':
-            case 'tits':
-            case 'kuni':
-            case 'kiss':
-            case 'erok':
-            case 'smug':
-            case 'baka':
-            case 'solog':
-            case 'feetg':
-            case 'lewdk':
-            case 'waifu':
-            case 'pussy':
-            case 'femdom':
-            case 'cuddle':
-            case 'hentai':
-            case 'eroyuri':
-            case 'cum_jpg':
-            case 'blowjob':
-            case 'erofeet':
-            case 'holoero':
-            case 'classic':
-            case 'erokemo':
-            case 'fox_girl':
-            case 'futanari':
-            case 'lewdkemo':
-            case 'wallpaper':
-            case 'pussy_jpg':
-            case 'kemonomimi':
-            case 'nsfw_avatar':
-                await lol.replyWithPhoto({ url: `https://api.lolhuman.xyz/api/random2/${command}?apikey=${apikey}` })
-                break
-
+			case 'ahegao' :
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/ahegao?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result })
+				break
+			case 'cum':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/cum?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'ass':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/ass?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'bdsm':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/bdsm?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'blowjob':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/blowjob?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'ero':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/ero?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'foot':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/foot?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'femdom':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/femdom?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'cuckold':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/cuckold?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'gangbang':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/gangbang?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'glasses':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/glasses?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'hentai':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/hentai?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'hentaigif':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/hentaigif?apikey=ZeroYT7`)
+				await lol.replyWithVideo({ url : result.result})
+				break
+			case 'jahy':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/jahy?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'masturbation':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/masturbation?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'neko':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/nsfwNeko?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'orgy':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/orgy?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'panties':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/panties?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'pussy':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/pussy?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'thighs':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/thighs?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+			case 'yuri':
+				result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/yuri?apikey=ZeroYT7`)
+				await lol.replyWithPhoto({ url : result.result})
+				break
+            
                 // Textprome //
             case 'blackpink':
             case 'neon':
@@ -886,6 +925,14 @@ result = await fetchJson(`https://yuzzu-api.herokuapp.com/api/textpro/${command}
 tod = result.result
                 await lol.replyWithPhoto({ url: tod })
                 break
+			case 'thunder':
+                if (args.length == 0) return await reply(`Example: ${prefix + command} LoL Human`)
+                text = args.join(" ")
+
+				result = await fetchJson(`https://yuzzu-api.herokuapp.com/api/textpro/thunder?text=${text}`)
+
+                await lol.replyWithPhoto({ url: result.result })
+				break
             case 'pornhub':
             case 'glitch':
             case 'avenger':
