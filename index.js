@@ -892,21 +892,12 @@ bot.on("message", async (lol) => {
         await lol.replyWithPhoto({ url: result.result })
         break
 		
-	case 'wallpaperanime1':
+	case 'wallpaperanime':
 			if (args.length == 0) return await reply(`Example: ${prefix + command} shinoa`)
 				text = args.join(" ")
 			result = await wall.getAnimeWall4({ title: `${text}`, type: "sfw", page: 1 })
 			bang = result[Math.floor(Math.random() * result.length)]
 			await lol.replyWithPhoto({ url: bang.image })
-        break
-		
-	case 'wallpaperanime2':
-			if (args.length == 0) return await reply(`Example: ${prefix + command} shinoa`)
-				text = args.join(" ")
-			result = await wall.getAnimeWall2({ title: `${text}`, type: "sfw", page: 1 })
-			bang = result[Math.floor(Math.random() * result.length)]
-			tod = `https://wallpapercave.com/${bang}`
-			await lol.replyWithPhoto({ url: tod })
         break
 
       // Textprome //
