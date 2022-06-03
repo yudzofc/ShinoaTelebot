@@ -1,4 +1,4 @@
-const { fetchJson, range, parseMarkdown } = require('./lib/function')
+const { fetchJson, range, parseMarkdown, getBuffer } = require('./lib/function')
 const { Telegraf } = require('telegraf')
 const help = require('./lib/help')
 const tele = require('./lib/tele')
@@ -9,6 +9,9 @@ const { TraceMoe } = require('trace.moe.ts')
 const wait = new TraceMoe();
 const saucenao = require("sagiri");
 const client = saucenao("074a1f1a40e94436de37232d4e9f9d70afcdb90e");
+const textapi = require('textmaker-thiccy');
+const { AnimeWallpaper } = require("anime-wallpaper");
+const wall = new AnimeWallpaper();
 const {
   apikey,
   bot_token,
@@ -888,9 +891,25 @@ bot.on("message", async (lol) => {
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/yuri?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
+		
+	case 'wallpaperanime':
+			if (args.length == 0) return await reply(`Example: ${prefix + command} shinoa`)
+				text = args.join(" ")
+			result = await wall.getAnimeWall4({ title: `${text}`, type: "sfw", page: 1 })
+			bang = result[Math.floor(Math.random() * result.length)]
+			await lol.replyWithPhoto({ url: bang.image })
+        break
 
       // Textprome //
       case 'blackpink':
+			if (args.length == 0) return await reply(`Example: ${prefix + command} LoL Human`)
+				text = args.join(" ")
+			result = await textapi.textpro("https://textpro.me/create-blackpink-logo-style-online-1001.html",
+				"bujank"
+			)
+			await lol.replyWithPhoto({ url: result })
+			
+        break
       case 'neon':
       case 'greenneon':
       case 'advanceglow':
