@@ -1,4 +1,4 @@
-const { fetchJson, range, parseMarkdown, getBuffer } = require('./lib/function')
+const { fetchJson, range, parseMarkdown, getBuffer, runtime } = require('./lib/function')
 const { Telegraf } = require('telegraf')
 const help = require('./lib/help')
 const tele = require('./lib/tele')
@@ -158,6 +158,12 @@ bot.on("message", async (lol) => {
       case 'help':
         await help.help(lol, user.full_name, lol.message.from.id.toString())
         break
+		
+	case 'runtime':
+            run = process.uptime() 
+            teks = `${runtime(run)}`
+            await reply(teks)
+            break 
 
       // Islami //
       case 'listsurah':
