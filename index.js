@@ -162,7 +162,7 @@ bot.on("message", async (lol) => {
 	case 'runtime':
             run = process.uptime() 
             teks = `${runtime(run)}`
-            await reply(teks)
+            await await lol.replyWithPhoto({ url: `https://i.pinimg.com/originals/10/e0/d3/10e0d32a5bb46576018e3e7203fd5161.jpg` }, { caption: 'Bot berjalan selama ' + teks , parse_mode: "Markdown" })
             break 
 
       // Islami //
