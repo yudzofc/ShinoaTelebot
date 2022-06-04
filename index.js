@@ -12,6 +12,8 @@ const client = saucenao("074a1f1a40e94436de37232d4e9f9d70afcdb90e");
 const textapi = require('textmaker-thiccy');
 const { AnimeWallpaper } = require("anime-wallpaper");
 const wall = new AnimeWallpaper();
+const brainly = require('brainly-scraper');
+const samih = JSON.parse(fs.readFileSync('./database/simi.json'));
 const {
   apikey,
   bot_token,
@@ -99,7 +101,8 @@ bot.on("message", async (lol) => {
         return await lol.replyWithMarkdown(text.substr(x, 4096), { disable_web_page_preview: true })
       }
     }
-
+	const pesan = lol.message
+	const groupId = pesan.chat.id
     const isCmd = cmd
     const isGroup = lol.chat.type.includes("group")
     const groupName = isGroup ? lol.chat.title : ""
@@ -116,6 +119,7 @@ bot.on("message", async (lol) => {
 
     const quotedMessage = lol.message.reply_to_message || {}
     const isQuotedImage = quotedMessage.hasOwnProperty("photo")
+	const isSimi = samih.includes(groupId)
     const isQuotedVideo = quotedMessage.hasOwnProperty("video")
     const isQuotedAudio = quotedMessage.hasOwnProperty("audio")
     const isQuotedSticker = quotedMessage.hasOwnProperty("sticker")
@@ -164,7 +168,22 @@ bot.on("message", async (lol) => {
             teks = `${runtime(run)}`
             await await lol.replyWithPhoto({ url: `https://i.pinimg.com/originals/10/e0/d3/10e0d32a5bb46576018e3e7203fd5161.jpg` }, { caption: 'Bot berjalan selama ' + teks , parse_mode: "Markdown" })
             break 
-
+	case 'simih':
+					if (!isGroup) return reply('Harus di group om')
+					if (args.length < 1) return reply('Ketik simih 1 untuk mengaktifkan, ketik simih 0 untuk menonaktifkan')
+					if (Number(args[0]) === 1) {
+						if (isSimi) return reply('𝘀𝘂𝗱𝗮𝗵 𝗮𝗸𝘁𝗶𝗳 !!!')
+						samih.push(groupId)
+						fs.writeFileSync('./database/simi.json', JSON.stringify(samih))
+						await reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Mengaktifkan simi')
+					} else if (Number(args[0]) === 0) {
+						samih.splice(groupId, 1)
+						fs.writeFileSync('./database/simi.json', JSON.stringify(samih))
+						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Menonaktifkan simi')
+					} else {
+						reply('?')
+					}
+					break
       // Islami //
       case 'listsurah':
         result = await fetchJson(`https://api.lolhuman.xyz/api/quran?apikey=${apikey}`)
@@ -1060,11 +1079,18 @@ bot.on("message", async (lol) => {
         break
       case 'test':
         test = await bot.telegram.getChatMembersCount(lol.message.chat.id)
-        console.log(test)
+		teks = 'Jumlah member dalam chat ini ada ' + test + ' orang'
+        await reply(teks)
         break
 
       default:
         if (!isGroup && !isCmd && !isMedia) {
+          await lol.replyWithChatAction("typing")
+          simi = await fetchJson(`https://api.simsimi.net/v2/?text=${body}&lc=id`)
+          sami = simi.success
+          await reply(sami)
+        }
+		if (isGroup && !isCmd && !isMedia && isSimi) {
           await lol.replyWithChatAction("typing")
           simi = await fetchJson(`https://api.simsimi.net/v2/?text=${body}&lc=id`)
           sami = simi.success

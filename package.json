@@ -9,6 +9,7 @@
     "dependencies": {
         "anime-wallpaper": "^1.0.2",
         "axios": "^0.27.2",
+        "brainly-scraper": "^1.0.3",
         "chalk": "^4.1.0",
         "fs": "0.0.1-security",
         "hxz-api": "^1.0.1",
