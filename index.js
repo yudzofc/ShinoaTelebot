@@ -1,4 +1,4 @@
-const { fetchJson, range, parseMarkdown, getBuffer, runtime } = require('./lib/function')
+const { fetchJson, range, parseMarkdown, getBuffer, runtime, time } = require('./lib/function')
 const { Telegraf } = require('telegraf')
 const help = require('./lib/help')
 const tele = require('./lib/tele')
@@ -14,6 +14,7 @@ const { AnimeWallpaper } = require("anime-wallpaper");
 const wall = new AnimeWallpaper();
 const brainly = require('brainly-scraper');
 const samih = JSON.parse(fs.readFileSync('./database/simi.json'));
+const moment = require('moment-timezone');
 const {
   apikey,
   bot_token,
@@ -157,9 +158,38 @@ bot.on("message", async (lol) => {
     function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
-    
+    function kyun(seconds){
+            function pad(s){
+            return (s < 10 ? '0' : '') + s;
+            }
+            var hours = Math.floor(seconds / (60*60));
+            var minutes = Math.floor(seconds % (60*60) / 60);
+            var seconds = Math.floor(seconds % 60);
+            return `${pad(hours)}Jam ${pad(minutes)}Menit ${pad(seconds)}Detik`
+            }
+        const time2 = moment().tz('Asia/Jakarta').format('HH:mm:ss')
+          if(time2 < "23:59:00"){
+          var ucapanWaktu = '𝐒𝐞𝐥𝐚𝐦𝐚𝐭 𝐌𝐚𝐥𝐚𝐦🌌'
+}
+          if(time2 < "19:00:00"){
+          var ucapanWaktu = '𝐒𝐞𝐥𝐚𝐦𝐚𝐭 𝐏𝐞𝐭𝐚𝐧𝐠🌆'
+}
+          if(time2 < "18:00:00"){
+          var ucapanWaktu = '𝐒𝐞𝐥𝐚𝐦𝐚𝐭 𝐒𝐨𝐫𝐞🌇'
+}
+          if(time2 < "15:00:00"){
+          var ucapanWaktu = '𝐒𝐞𝐥𝐚𝐦𝐚𝐭 𝐒𝐢𝐚𝐧𝐠🏞'
+}
+          if(time2 < "11:00:00"){
+          var ucapanWaktu = '𝐒𝐞𝐥𝐚𝐦𝐚𝐭 𝐏𝐚𝐠𝐢🌅'
+}
+          if(time2 < "05:00:00"){
+          var ucapanWaktu = '𝐒𝐞𝐥𝐚𝐦𝐚𝐭 𝐌𝐚𝐥𝐚𝐦🏙'
+}
+
     switch (command) {
       case 'help':
+	  case 'menu':
         await help.help(lol, user.full_name, lol.message.from.id.toString())
         break
 		
@@ -525,13 +555,22 @@ bot.on("message", async (lol) => {
       case 'wait':
         if (isQuotedImage || isQuotedAnimation || isQuotedVideo || isQuotedDocument) {
           url_file = await tele.getLink(file_id)
-          await wait.fetchAnime(url_file)
-            .then(async (result) => {
-              tod = result.result[0]
-              caption = `\`❖ Filename   :\` *${tod.filename}*\n`
-              caption += `\`❖ Episode    :\` *${tod.episode}*\n`
-              caption += `\`❖ Similarity :\` *${tod.similarity}*\n`
-              caption += `\`❖ Anilist    :\` *https://anilist.co/anime/${tod.anilist}/*\n`
+          result = await fetchJson(
+				`https://api.trace.moe/search?anilistInfo&url=${url_file}`
+		  ).then(async (bang) => {
+              tod = bang.result[0]
+			  from2 = time(tod.from)
+              caption = `\`❖ Anilist    :\` *https://anilist.co/anime/${tod.anilist.id}/*\n`
+              caption += `\`❖ MAL        :\` *https://myanimelist.net/anime/${tod.anilist.idMal}/*\n`
+              caption += `\`❖ Title      :\` *${tod.anilist.title.romaji}*\n`
+			  caption += `\`❖ Title Jpn  :\` *${tod.anilist.title.native}*\n`
+			  caption += `\`❖ Title Eng  :\` *${tod.anilist.title.english}*\n`
+			  caption += `\`❖ Synonyms   :\` *${tod.anilist.synonyms}*\n`
+			  caption += `\`❖ Ecchi      :\` *${tod.anilist.isAdult}*\n`
+              caption += `\`❖ Filename   :\` *${tod.filename}*\n`
+			  caption += `\`❖ Time       :\` *${from2}*\n`
+			  caption += `\`❖ Episode    :\` *${tod.episode}*\n`
+			  caption += `\`❖ Similarity :\` *${tod.similarity}*\n`
               await lol.replyWithVideo({ url: tod.video }, { caption: caption, parse_mode: "Markdown" })
             })
         } else {
