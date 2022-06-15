@@ -570,7 +570,7 @@ bot.on("message", async (lol) => {
               caption += `\`❖ Filename   :\` *${tod.filename}*\n`
 			  caption += `\`❖ Time       :\` *${from2}*\n`
 			  caption += `\`❖ Episode    :\` *${tod.episode}*\n`
-			  caption += `\`❖ Similarity :\` *${tod.similarity}*\n`
+			  caption += `\`❖ Similarity :\` *${(tod.similarity * 100).toFixed(1)}% *\n`
               await lol.replyWithVideo({ url: tod.video }, { caption: caption, parse_mode: "Markdown" })
             })
         } else {
