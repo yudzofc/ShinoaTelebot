@@ -40,8 +40,13 @@ bot.on("new_chat_members", async (lol) => {
     var full_name = tele.getUser(x).full_name
     console.log(chalk.whiteBright("├"), chalk.cyanBright("[  JOINS  ]"), chalk.whiteBright(full_name), chalk.greenBright("join in"), chalk.whiteBright(groupname))
 
-    welkom = `Selamat Datang di Grup ${groupname}\n❖ Nama      :\n❖ Umur       :\n❖ Asal Kota :\n❖ Hobby     :`
-    await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/card/welcome3?username=${full_name}&memberCount=${groupmembers}&gcname=${groupname}&bg=https://i.ibb.co/wzyW0n5/Ep-D73w-PVo-AAN03n-1.jpg&pp=${pp_user}&gcicon=${pp_group}` }, { caption: welkom, parse_mode: "Markdown" })
+        caption = `Hello ${full_name} Welcome to ${groupname}\n`
+        caption += `\`❖ Name     :\` \n`
+        caption += `\`❖ Age      :\` \n`
+        caption += `\`❖ Hobby    :\` \n`
+        caption += `\`❖ Domisile :\` \n`
+    
+    await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/card/welcome3?username=${full_name}&memberCount=${groupmembers}&gcname=${groupname}&bg=https://i.ibb.co/wzyW0n5/Ep-D73w-PVo-AAN03n-1.jpg&pp=${pp_user}&gcicon=${pp_group}` }, { caption: caption, parse_mode: "Markdown" })
   }
 })
 
