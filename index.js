@@ -230,20 +230,14 @@ bot.on("message", async (lol) => {
         await reply(text)
         break
       case 'alquran':
-        if (args.length < 1) return await reply(`Example: ${prefix + command} 18 or ${prefix + command} 18/10 or ${prefix + command} 18/1-10`)
-        urls = `https://api.lolhuman.xyz/api/quran/${args[0]}?apikey=${apikey}`
-        quran = await fetchJson(urls)
-        result = quran.result
-        ayat = result.ayat
-        text = `QS. ${result.surah} : 1-${ayat.length}\n\n`
-        for (var x of ayat) {
-          arab = x.arab
-          nomor = x.ayat
-          latin = x.latin
-          indo = x.indonesia
-          text += `${arab}\n${nomor}. ${latin}\n${indo}\n\n`
-        }
+        if (args.length < 1) return await reply(`Example: ${prefix + command} 18`)
+        surah = args[0]
+        result = await fetchjson(`https://hadi-api.herokuapp.com/api/quran?no=${surah}`)
+        bang = result.result
+        text = `${bang.surah}\n\n${bang.ayat}`
+        teks = `${bang.terjemahan}`
         await reply(text)
+        await reply(teks)
         break
       case 'alquranaudio':
         if (args.length == 0) return await reply(`Example: ${prefix + command} 18 or ${prefix + command} 18/10`)
@@ -292,6 +286,16 @@ bot.on("message", async (lol) => {
         break
 
       // Downloader //
+      case 'nulis':
+        if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
+        query = args.join(" ")
+        await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/canvas/nulis?text=${query}` }, { caption: caption, parse_mode: "Markdown" })
+        break
+        case 'nulis2':
+        if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
+        query = args.join(" ")
+        await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/canvas/nulis2?text=${query}` }, { caption: caption, parse_mode: "Markdown" })
+        break
       case 'ytplay':
       case 'play':
         if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
