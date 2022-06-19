@@ -245,13 +245,11 @@ bot.on("message", async (lol) => {
         await lol.replyWithAudio({ url: `https://api.lolhuman.xyz/api/quran/audio/${surah}?apikey=${apikey}` })
         break
       case 'asmaulhusna':
-        result = await fetchJson(`https://api.lolhuman.xyz/api/asmaulhusna?apikey=${apikey}`)
-        result = result.result
-        text = `\`No        :\` *${result.index}*\n`
+        result = await fetchJson(`https://github.com/mikqi/dzikir-counter/blob/master/www/asmaul-husna.json`)
+        text = `\`No        :\` *${result.urutan}*\n`
         text += `\`Latin     :\` *${result.latin}*\n`
-        text += `\`Arab      :\` *${result.ar}*\n`
-        text += `\`Indonesia :\` *${result.id}*\n`
-        text += `\`English   :\` *${result.en}*`
+        text += `\`Arab      :\` *${result.arab}*\n`
+        text += `\`Indonesia :\` *${result.arti}*\n`
         await reply(text)
         break
       case 'kisahnabi':
