@@ -231,8 +231,8 @@ bot.on("message", async (lol) => {
         break
       case 'alquran':
         if (args.length < 1) return await reply(`Example: ${prefix + command} 18`)
-        surah = args[0]
-        result = await fetchjson(`https://hadi-api.herokuapp.com/api/quran?no=${surah}`)
+        surah = args.join(" ")
+        result = await fetchJson(`https://hadi-api.herokuapp.com/api/quran?no=${surah}`)
         bang = result.result
         text = `${bang.surah}\n\n${bang.ayat}`
         teks = `${bang.terjemahan}`
@@ -289,12 +289,12 @@ bot.on("message", async (lol) => {
       case 'nulis':
         if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
         query = args.join(" ")
-        await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/canvas/nulis?text=${query}` }, { caption: caption, parse_mode: "Markdown" })
+        await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/canvas/nulis?text=${query}` }, { caption: 'rajin rajin nulis ya bang', parse_mode: "Markdown" })
         break
         case 'nulis2':
         if (args.length == 0) return await reply(`Example: ${prefix + command} melukis senja`)
         query = args.join(" ")
-        await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/canvas/nulis2?text=${query}` }, { caption: caption, parse_mode: "Markdown" })
+        await lol.replyWithPhoto({ url: `https://hadi-api.herokuapp.com/api/canvas/nulis2?text=${query}` }, { caption: 'rajin rajin nulis ya bang', parse_mode: "Markdown" })
         break
       case 'ytplay':
       case 'play':
