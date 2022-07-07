@@ -13,6 +13,7 @@ const textapi = require('textmaker-thiccy');
 const { AnimeWallpaper } = require("anime-wallpaper");
 const wall = new AnimeWallpaper();
 const brainly = require('brainly-scraper');
+const fb = require('fbdownload');
 const samih = JSON.parse(fs.readFileSync('./database/simi.json'));
 const nsfw = JSON.parse(fs.readFileSync('./database/nsfw.json'));
 const moment = require('moment-timezone');
@@ -404,6 +405,19 @@ bot.on("message", async (lol) => {
         await lol.replyWithPhoto({ url: result.thumb }, { caption: caption, parse_mode: "Markdown" })
         if (Number(result.size.split(` MB`)[0]) >= 50.00) return await reply(`Sorry the bot cannot send more than 50 MB!`)
         await lol.replyWithAudio({ url: result.mp3, filename: result.title })
+        break
+        case 'fbdownload':
+        if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.facebook.com/groups/keluhresahpemaingenshinimpact/permalink/2148709575289122/`)
+        url = args.join(" ")
+        result = await fb.fbdown(url)
+
+        result = result.result
+        link = result.links
+            
+          caption = `\`❖ Title    :\` *${result.title}*\n`
+          caption += `\`❖ Duration :\` *${result.duration}*`
+        await lol.replyWithPhoto({ url: result.thumbnail }, { caption: caption, parse_mode: "Markdown" })
+          await lol.replyWithVideo({ url: link.hd, filename: result.title })
         break
       case 'ytmp4':
         if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
