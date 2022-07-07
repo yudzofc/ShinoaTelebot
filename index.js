@@ -14,6 +14,7 @@ const { AnimeWallpaper } = require("anime-wallpaper");
 const wall = new AnimeWallpaper();
 const brainly = require('brainly-scraper');
 const samih = JSON.parse(fs.readFileSync('./database/simi.json'));
+const nsfw = JSON.parse(fs.readFileSync('./database/nsfw.json'));
 const moment = require('moment-timezone');
 const {
   apikey,
@@ -89,6 +90,24 @@ bot.on("callback_query", async (lol) => {
   await help[callback_data](lol, user_id.toString())
 })
 
+bot.use(function(lol, next){
+	/// or other chat types...
+	// if( lol.chat.type !== 'channel' ) return next();
+	if( lol.chat.id > 0 ) return next();
+	
+	/// need to cache this result ( variable or session or ....)
+	/// because u don't need to call this method
+	/// every message
+	return bot.telegram.getChatAdministrators(lol.chat.id)
+		.then(function(data){
+			if( !data || !data.length ) return;
+			lol.chat._admins = data;
+			lol.from._is_in_admin_list = data.some( adm => adm.user.id === lol.from.id );
+		})
+		.catch(console.log)
+		.then(_ => next(lol));
+});
+
 bot.on("message", async (lol) => {
   try {
     const body = lol.message.text || lol.message.caption || ""
@@ -109,10 +128,12 @@ bot.on("message", async (lol) => {
     }
 	const pesan = lol.message
 	const groupId = pesan.chat.id
+    const groupMem = await lol.telegram.getChatMember(lol.chat.id,lol.from.id)
+    const username = tele.getUser(user).username
+    const isAdmin = lol.from._is_in_admin_list
     const isCmd = cmd
     const isGroup = lol.chat.type.includes("group")
     const groupName = isGroup ? lol.chat.title : ""
-
     const isImage = lol.message.hasOwnProperty("photo")
     const isVideo = lol.message.hasOwnProperty("video")
     const isAudio = lol.message.hasOwnProperty("audio")
@@ -126,6 +147,7 @@ bot.on("message", async (lol) => {
     const quotedMessage = lol.message.reply_to_message || {}
     const isQuotedImage = quotedMessage.hasOwnProperty("photo")
 	const isSimi = samih.includes(groupId)
+    const isNsfw = nsfw.includes(groupId)
     const isQuotedVideo = quotedMessage.hasOwnProperty("video")
     const isQuotedAudio = quotedMessage.hasOwnProperty("audio")
     const isQuotedSticker = quotedMessage.hasOwnProperty("sticker")
@@ -202,8 +224,21 @@ bot.on("message", async (lol) => {
             run = process.uptime() 
             teks = `${runtime(run)}`
             await await lol.replyWithPhoto({ url: `https://images7.alphacoders.com/753/753131.png` }, { caption: 'Bot berjalan selama ' + teks , parse_mode: "Markdown" })
-            break 
+            break
+  
+     case 'tagall':
+       if (!isGroup) return reply('hanya bisa di group')
+        
+       /* text = 'tagalladmin\n'
+        for (let i of listadmin){
+        text += `@${i.user.username[0]}\n`
+        }
+              await reply(text)*/
+        console.log(listadmin)
+              break
+        
 	case 'simih':
+          if (!isAdmin) return reply('anda bukan admin')
 					if (!isGroup) return reply('Harus di group om')
 					if (args.length < 1) return reply('Ketik simih 1 untuk mengaktifkan, ketik simih 0 untuk menonaktifkan')
 					if (Number(args[0]) === 1) {
@@ -215,6 +250,24 @@ bot.on("message", async (lol) => {
 						samih.splice(groupId, 1)
 						fs.writeFileSync('./database/simi.json', JSON.stringify(samih))
 						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Menonaktifkan simi')
+					} else {
+						reply('?')
+					}
+					break
+        case 'nsfw':
+          if (!isAdmin) return reply('anda bukan admin')
+					if (!isGroup) return reply('Harus di group om')
+					if (args.length < 1) return reply('Ketik nsfw 1 untuk mengaktifkan, ketik nsfw 0 untuk menonaktifkan')
+					if (Number(args[0]) === 1) {
+						if (isNsfw) return reply('𝘀𝘂𝗱𝗮𝗵 𝗮𝗸𝘁𝗶𝗳 !!!')
+						nsfw.push(groupId)
+						fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
+						await reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Mengaktifkan Nsfw')
+					} else if (Number(args[0]) === 0) {
+						nsfw.splice(groupId, 0)
+						fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
+            
+						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Menonaktifkan Nsfw')
 					} else {
 						reply('?')
 					}
@@ -245,11 +298,17 @@ bot.on("message", async (lol) => {
         await lol.replyWithAudio({ url: `https://api.lolhuman.xyz/api/quran/audio/${surah}?apikey=${apikey}` })
         break
       case 'asmaulhusna':
-        result = await fetchJson(`https://github.com/mikqi/dzikir-counter/blob/master/www/asmaul-husna.json`)
-        text = `\`No        :\` *${result.urutan}*\n`
-        text += `\`Latin     :\` *${result.latin}*\n`
-        text += `\`Arab      :\` *${result.arab}*\n`
-        text += `\`Indonesia :\` *${result.arti}*\n`
+        if (args.length == 0) return await reply(`Example: ${prefix + command} 3`)
+        result = await fetchJson(`https://raw.githubusercontent.com/mikqi/dzikir-counter/master/www/asmaul-husna.json`)
+       let cuy = args.join(" ")
+        let bro = 1
+        let asade = cuy - bro
+          text = 'Asmaul Husna:\n'
+          text += `\`No     :\` ${result[asade].urutan}\n`
+          text += `\`Latin  :\` ${result[asade].latin}\n`
+          text += `\`Arab   :\` ${result[asade].arab}\n`
+          text += `\`Arti   :\` ${result[asade].arti}\n`
+        
         await reply(text)
         break
       case 'kisahnabi':
@@ -589,12 +648,15 @@ bot.on("message", async (lol) => {
           url_file = await tele.getLink(file_id)
           await client(url_file)
             .then(async (result) => {
-              tod = result[0]
-              caption = `\`❖ Site       :\` *${tod.site}*\n`
-              caption += `\`❖ Index      :\` *${tod.index}*\n`
-              caption += `\`❖ Similarity :\` *${tod.similarity}*\n`
-              caption += `\`❖ Link HD    :\` *${tod.url}*\n`
-              await lol.replyWithPhoto({ url: tod.thumbnail }, { caption: caption, parse_mode: "Markdown" })
+            x = result.find(result => result['site'] === 'Pixiv');
+              console.log(x)
+              
+              caption = `\`❖ Site       :\` *${x.site}*\n`
+              caption += `\`❖ Index      :\` *${x.index}*\n`
+              caption += `\`❖ Similarity :\` *${x.similarity}*\n`
+              caption += `\`❖ Link HD    :\` *${x.url}*\n`
+
+              await lol.replyWithPhoto({ url: x.thumbnail }, { caption: caption, parse_mode: "Markdown" })
             })
         } else {
           reply(`Tag gambar yang sudah dikirim`)
@@ -876,89 +938,111 @@ bot.on("message", async (lol) => {
       case 'biganimetiddies':
       case 'animebellybutton':
       case 'hentai4everyone':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         await lol.replyWithPhoto({ url: `https://api.lolhuman.xyz/api/random/nsfw/${command}?apikey=${apikey}` })
         break
       case 'ahegao':
+        if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/ahegao?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'cum':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/cum?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'ass':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/ass?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'bdsm':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/bdsm?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'blowjob':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/blowjob?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'ero':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/ero?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'foot':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/foot?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'femdom':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/femdom?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'cuckold':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/cuckold?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'gangbang':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/gangbang?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'glasses':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/glasses?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'hentai':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/hentai?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'hentaigif':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/hentaigif?apikey=ZeroYT7`)
         await lol.replyWithVideo({ url: result.result })
         break
       case 'jahy':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/jahy?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'masturbation':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/masturbation?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'neko':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/nsfwNeko?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'orgy':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/orgy?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'panties':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/panties?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'pussy':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/pussy?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'thighs':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/thighs?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
       case 'yuri':
+          if (!isNsfw) return await reply('Fitur Ini tidak diperbolehkan di group ini, silahkan minta admin untuk mengaktifkannya')
         result = await fetchJson(`https://zeroyt7-api.herokuapp.com/api/nsfw/yuri?apikey=ZeroYT7`)
         await lol.replyWithPhoto({ url: result.result })
         break
