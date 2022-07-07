@@ -399,6 +399,7 @@ bot.on("message", async (lol) => {
       case 'ytmp3':
         if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
         result = await fetchJson(`https://yuzzu-api.herokuapp.com/api/ytdl?link=${args[0]}`)
+        
         result = result.result
         caption = `\`❖ Title    :\` *${result.title}*\n`
         caption += `\`❖ Size     :\` *${result.size_mp3}*`
@@ -410,14 +411,17 @@ bot.on("message", async (lol) => {
         if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.facebook.com/groups/keluhresahpemaingenshinimpact/permalink/2148709575289122/`)
         url = args.join(" ")
         result = await fb.fbdown(url)
-
+        console.log(result)
         result = result.result
         link = result.links
             
           caption = `\`❖ Title    :\` *${result.title}*\n`
           caption += `\`❖ Duration :\` *${result.duration}*`
         await lol.replyWithPhoto({ url: result.thumbnail }, { caption: caption, parse_mode: "Markdown" })
-          await lol.replyWithVideo({ url: link.hd, filename: result.title })
+        try {
+          await lol.replyWithVideo({ url: link.hd, filename: result.title })} catch(error) {
+            await lol.replyWithVideo({ url: link.sd, filename: result.title })
+          }
         break
       case 'ytmp4':
         if (args.length == 0) return await reply(`Example: ${prefix + command} https://www.youtube.com/watch?v=qZIQAk-BUEc`)
