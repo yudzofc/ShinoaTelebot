@@ -238,7 +238,7 @@ bot.on("message", async (lol) => {
               break
         
 	case 'simih':
-          if (!isAdmin) return reply('anda bukan admin')
+          if (!isAdmin) return reply('Maaf anda bukan admin')
 					if (!isGroup) return reply('Harus di group om')
 					if (args.length < 1) return reply('Ketik simih 1 untuk mengaktifkan, ketik simih 0 untuk menonaktifkan')
 					if (Number(args[0]) === 1) {
@@ -255,7 +255,7 @@ bot.on("message", async (lol) => {
 					}
 					break
         case 'nsfw':
-          if (!isAdmin) return reply('anda bukan admin')
+          if (!isAdmin) return reply('Maaf anda bukan admin')
 					if (!isGroup) return reply('Harus di group om')
 					if (args.length < 1) return reply('Ketik nsfw 1 untuk mengaktifkan, ketik nsfw 0 untuk menonaktifkan')
 					if (Number(args[0]) === 1) {
@@ -264,7 +264,7 @@ bot.on("message", async (lol) => {
 						fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
 						await reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Mengaktifkan Nsfw')
 					} else if (Number(args[0]) === 0) {
-						nsfw.splice(groupId, 0)
+						nsfw.splice(groupId, 1)
 						fs.writeFileSync('./database/nsfw.json', JSON.stringify(nsfw))
             
 						reply('❬ 𝗦𝗨𝗞𝗦𝗘𝗦 ❭ Menonaktifkan Nsfw')
