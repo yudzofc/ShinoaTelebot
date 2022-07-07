@@ -416,7 +416,10 @@ bot.on("message", async (lol) => {
             
           caption = `\`❖ Title    :\` *${result.title}*\n`
           caption += `\`❖ Duration :\` *${result.duration}*`
-        await lol.replyWithPhoto({ url: result.thumbnail }, { caption: caption, parse_mode: "Markdown" })
+        await lol.replyWithPhoto({ url: result.thumbnacuy = result.result.links
+            tod = result.result
+          caption = `\`❖ Title    :\` *${tod.title}*\n`
+          caption += `\`❖ Duration :\` *${tod.duration}*`il }, { caption: caption, parse_mode: "Markdown" })
           await lol.replyWithVideo({ url: link.hd, filename: result.title })
         break
       case 'ytmp4':
